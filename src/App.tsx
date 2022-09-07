@@ -11,6 +11,7 @@ export default function App() {
         }}
       >
         <Link to="/usememo">UseMemo</Link> |{" "}
+        <Link to="/paginatedtable">tableWithPagination</Link> |{" "}
       </nav>
       <Outlet />
     </div>

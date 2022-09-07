@@ -5,6 +5,7 @@ import App from "./App";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import AppMemo from "./routes/usememo";
 import Authtoken from "./components/Authtoken";
+import AppPagination from "./components/tableWithPagination/AppPagination";
 
 const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
@@ -15,6 +16,7 @@ root.render(
       <Routes>
         <Route path="/" element={<App />}>
           <Route path="usememo" element={<AppMemo />} />
+          <Route path="paginatedtable" element={<AppPagination />} />
         </Route>
 
         {/* AUTH TOKEN */}
