@@ -1,5 +1,9 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import PaginatedTable from "./PaginatedTable";
+import Table from "./Table";
+import sampleData from "./tableData";
+import usePagination from "./usePagination";
 
 // Stwórz komponent PaginatedTable, który będzie renderował paginowaną tabelkę na podstawie danych przekazanych do propsa dataEntries - wygenerowanych przez Ciebie danych.
 // Stwórz komponent Pagination który będzie renderował wszystkie przyciski do zmiany stron
@@ -26,12 +30,17 @@ import { useState, useEffect } from "react";
 // };
 
 export default function AppPagination() {
+  const paginationData = usePagination(sampleData.products);
+  console.log("MAIN APP");
+  console.log(sampleData);
   return (
     <>
       <div>PaginatedTable</div>
       <div>TABLE HERE</div>
 
-      <div>{}</div>
+      <div>
+        <PaginatedTable dataItems={sampleData.products} />
+      </div>
     </>
   );
 }
