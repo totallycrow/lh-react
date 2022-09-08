@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 // { actualPageIdx, lastPageIdx, entriesOnSelectedPage, isBusy }
 
-export default function usePagination(dataEntries: any, elementsOnPage = 50) {
+export default function usePagination(dataEntries: any, elementsOnPage = 10) {
   const defaultState = {
     actualPageIdx: 0,
     lastPageIdx: 0,
