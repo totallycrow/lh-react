@@ -20,11 +20,10 @@ function AppMemo() {
   console.log(state);
 
   useEffect(() => {
-    // OK
     if (typeof setState === "function") {
       setState(mockDefaultState);
     }
-    // OK
+
     if (typeof setState === "function") {
       setState(mockNewState);
     }

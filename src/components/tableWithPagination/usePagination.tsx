@@ -1,8 +1,6 @@
 import React from "react";
 import { useState, useEffect, useCallback } from "react";
 
-// { actualPageIdx, lastPageIdx, entriesOnSelectedPage, isBusy }
-
 interface IPaginationState {
   actualPageIdx: number;
   lastPageIdx: any;
@@ -21,6 +19,7 @@ export default function usePagination(
     isBusy: false,
   };
 
+  // MEMOIZE FUNCTIONS / VARIABLES?
   const allEntries = dataEntries.slice(0);
 
   const getTotalPagesCount = (maxElements: number, dataSet: Array<any>) =>
@@ -42,11 +41,6 @@ export default function usePagination(
 
     return allEntries.slice(startIndex, endIndex);
   };
-
-  console.log("USE PAGINATION FIRED");
-
-  console.log(allEntries);
-  // console.log(defaultState.entriesOnSelectedPage);
 
   const [paginationState, setPaginationState] = useState(dummyState);
 
@@ -78,6 +72,7 @@ export default function usePagination(
     setPaginationState(initialState);
   }, []);
 
+  // ON PAGE CHANGE
   useEffect(() => {
     setNewDataItemsForPage(paginationState.actualPageIdx);
   }, [paginationState.actualPageIdx]);

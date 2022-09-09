@@ -4,16 +4,12 @@ export default function Pagination({
   paginationState,
   paginationActions,
 }: any) {
-  console.log("Start Pagination Component");
-  console.log(paginationState);
-
   const handleOnClick = (page: number) => {
     paginationActions.setActualPageIdx(page);
   };
 
   const generateButtons = () => {
     let buttonsArray = [];
-
     const lastPageIndex = paginationState.lastPageIdx;
 
     const firstPageButton = (
@@ -39,9 +35,6 @@ export default function Pagination({
   return (
     <>
       <div>Select Page</div>
-      {/* <button onClick={() => handleOnClick(1)}>1</button>
-      <button onClick={() => handleOnClick(2)}>2</button>
-      <button onClick={() => handleOnClick(3)}>3</button> */}
       {generateButtons()}
     </>
   );
