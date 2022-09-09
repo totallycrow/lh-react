@@ -6,5 +6,43 @@ export default function Pagination({
 }: any) {
   console.log("Start Pagination Component");
   console.log(paginationState);
-  return <div>{paginationState.entriesOnSelectedPage.length}</div>;
+
+  const handleOnClick = (page: number) => {
+    paginationActions.setActualPageIdx(page);
+  };
+
+  const generateButtons = () => {
+    let buttonsArray = [];
+
+    const lastPageIndex = paginationState.lastPageIdx;
+
+    const firstPageButton = (
+      <button onClick={() => handleOnClick(1)}>First Page</button>
+    );
+
+    const lastPageButton = (
+      <button onClick={() => handleOnClick(lastPageIndex)}>
+        lastPageIndex
+      </button>
+    );
+
+    buttonsArray.push(firstPageButton);
+
+    for (let i = 2; i < paginationState.lastPageIdx; i++) {
+      buttonsArray.push(<button onClick={() => handleOnClick(i)}>{i}</button>);
+    }
+
+    buttonsArray.push(lastPageButton);
+    return buttonsArray;
+  };
+
+  return (
+    <>
+      <div>Select Page</div>
+      {/* <button onClick={() => handleOnClick(1)}>1</button>
+      <button onClick={() => handleOnClick(2)}>2</button>
+      <button onClick={() => handleOnClick(3)}>3</button> */}
+      {generateButtons()}
+    </>
+  );
 }

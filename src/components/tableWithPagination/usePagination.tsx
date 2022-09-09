@@ -1,28 +1,91 @@
 import React from "react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 // { actualPageIdx, lastPageIdx, entriesOnSelectedPage, isBusy }
 
-export default function usePagination(dataEntries: any, elementsOnPage = 10) {
-  const defaultState = {
+interface IPaginationState {
+  actualPageIdx: number;
+  lastPageIdx: any;
+  entriesOnSelectedPage: Array<any>;
+  isBusy: boolean;
+}
+
+export default function usePagination(
+  dataEntries: any,
+  elementsOnPage = 10
+): [IPaginationState, any] {
+  const dummyState = {
     actualPageIdx: 0,
     lastPageIdx: 0,
     entriesOnSelectedPage: [],
     isBusy: false,
   };
 
-  const testState = {
-    actualPageIdx: 1,
-    lastPageIdx: 2,
-    entriesOnSelectedPage: dataEntries,
-    isBusy: false,
+  const allEntries = dataEntries.slice(0);
+
+  const getTotalPagesCount = (maxElements: number, dataSet: Array<any>) =>
+    Math.ceil(dataSet.length / maxElements);
+
+  const getFirstPageEntries = () => allEntries.slice(0, elementsOnPage);
+
+  const getPageItems = (
+    page: number,
+    maxElements: number,
+    dataSet: Array<any>
+  ) => {
+    if (page === 1) {
+      return getFirstPageEntries();
+    }
+
+    const endIndex = page * maxElements;
+    const startIndex = endIndex - maxElements;
+
+    return allEntries.slice(startIndex, endIndex);
   };
 
-  const [paginationState, setPaginationState] = useState(defaultState);
+  console.log("USE PAGINATION FIRED");
 
+  console.log(allEntries);
+  // console.log(defaultState.entriesOnSelectedPage);
+
+  const [paginationState, setPaginationState] = useState(dummyState);
+
+  const setActualPageIdx = (pageNumber: number) =>
+    setPaginationState((prevState) => {
+      let newState = { ...prevState };
+      newState.actualPageIdx = pageNumber;
+      return newState;
+    });
+
+  const setNewDataItemsForPage = (page: number) => {
+    const newData = getPageItems(page, elementsOnPage, allEntries);
+
+    setPaginationState((prevState) => {
+      let newState = { ...prevState };
+      newState.entriesOnSelectedPage = newData;
+      return newState;
+    });
+  };
+
+  // FIRST RENDER
   useEffect(() => {
-    setPaginationState(testState);
+    const initialState = {
+      actualPageIdx: 1,
+      lastPageIdx: getTotalPagesCount(elementsOnPage, allEntries),
+      entriesOnSelectedPage: getFirstPageEntries(),
+      isBusy: false,
+    };
+    setPaginationState(initialState);
   }, []);
 
-  return [paginationState, "actions"];
+  useEffect(() => {
+    setNewDataItemsForPage(paginationState.actualPageIdx);
+  }, [paginationState.actualPageIdx]);
+
+  const paginationActions = {
+    setNewDataItemsForPage: setNewDataItemsForPage,
+    setActualPageIdx: setActualPageIdx,
+  };
+
+  return [paginationState, paginationActions];
 }

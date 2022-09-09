@@ -30,7 +30,6 @@ import usePagination from "./usePagination";
 // };
 
 export default function AppPagination() {
-  const paginationData = usePagination(sampleData.products);
   console.log("MAIN APP");
   console.log(sampleData);
   return (
