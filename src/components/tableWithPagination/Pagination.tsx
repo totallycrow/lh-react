@@ -13,19 +13,29 @@ export default function Pagination({
     const lastPageIndex = paginationState.lastPageIdx;
 
     const firstPageButton = (
-      <button onClick={() => handleOnClick(1)}>First Page</button>
+      <button key="first-page-button" onClick={() => handleOnClick(1)}>
+        First Page
+      </button>
     );
 
     const lastPageButton = (
-      <button onClick={() => handleOnClick(lastPageIndex)}>
+      <button
+        key="last-page-button"
+        onClick={() => handleOnClick(lastPageIndex)}
+      >
         lastPageIndex
       </button>
     );
 
     buttonsArray.push(firstPageButton);
 
+    // KEY FOR BUTTONS?
     for (let i = 2; i < paginationState.lastPageIdx; i++) {
-      buttonsArray.push(<button onClick={() => handleOnClick(i)}>{i}</button>);
+      buttonsArray.push(
+        <button key={crypto.randomUUID()} onClick={() => handleOnClick(i)}>
+          {i}
+        </button>
+      );
     }
 
     buttonsArray.push(lastPageButton);
