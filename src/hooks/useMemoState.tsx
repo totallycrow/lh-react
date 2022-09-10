@@ -11,12 +11,8 @@ const useMemoState = <T,>(initialState: T): [T, Function] => {
       // Validate
       if (!val || !data) throw new Error("error");
 
-      if (!R.equals(val, data)) {
+      if (!R.equals(val, data)) 
         setData(val);
-        console.log("SetState fired");
-      } else {
-        console.log("SetState ignored");
-      }
     },
     [data]
   );

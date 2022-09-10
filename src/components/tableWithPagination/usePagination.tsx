@@ -1,5 +1,5 @@
 import React from "react";
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 
 interface IPaginationState {
   actualPageIdx: number;
@@ -8,79 +8,51 @@ interface IPaginationState {
   isBusy: boolean;
 }
 
+const dummyState = {
+  actualPageIdx: 1,
+  lastPageIdx: 0,
+  isBusy: false,
+};
+
+;
+
 export default function usePagination(
   dataEntries: any,
   elementsOnPage = 10
 ): [IPaginationState, any] {
-  const dummyState = {
-    actualPageIdx: 0,
-    lastPageIdx: 0,
-    entriesOnSelectedPage: [],
-    isBusy: false,
-  };
-
-  // MEMOIZE FUNCTIONS / VARIABLES?
-  const allEntries = dataEntries.slice(0);
-
-  const getTotalPagesCount = (maxElements: number, dataSet: Array<any>) =>
-    Math.ceil(dataSet.length / maxElements);
-
-  const getFirstPageEntries = () => allEntries.slice(0, elementsOnPage);
-
-  const getPageItems = (
-    page: number,
-    maxElements: number,
-    dataSet: Array<any>
-  ) => {
-    if (page === 1) {
-      return getFirstPageEntries();
+  const [paginationState, setPaginationState] = useState(dummyState);
+// 
+  const firstPageEntries = useMemo(() => dataEntries.slice(0, elementsOnPage), [dataEntries, elementsOnPage]);
+  const pageItems = useMemo(() => {
+    if (paginationState.currentPage === 1) {
+      return firstPageEntries;
     }
 
-    const endIndex = page * maxElements;
-    const startIndex = endIndex - maxElements;
+    const endIndex = paginationState.currentPage * elementsOnPage;
+    const startIndex = endIndex - elementsOnPage;
 
-    return allEntries.slice(startIndex, endIndex);
-  };
+    return dataEntries.slice(startIndex, endIndex);
+  }, [paginationState.currentPage, elementsOnPage, firstPageEntries]);
 
-  const [paginationState, setPaginationState] = useState(dummyState);
 
-  const setActualPageIdx = (pageNumber: number) =>
+  const setActualPageIdx = useCallback((pageNumber: number) =>
     setPaginationState((prevState) => {
       let newState = { ...prevState };
       newState.actualPageIdx = pageNumber;
       return newState;
-    });
+    }),[]);
 
-  const setNewDataItemsForPage = (page: number) => {
-    const newData = getPageItems(page, elementsOnPage, allEntries);
-
-    setPaginationState((prevState) => {
-      let newState = { ...prevState };
-      newState.entriesOnSelectedPage = newData;
-      return newState;
-    });
-  };
-
-  // FIRST RENDER
-  useEffect(() => {
-    const initialState = {
-      actualPageIdx: 1,
-      lastPageIdx: getTotalPagesCount(elementsOnPage, allEntries),
-      entriesOnSelectedPage: getFirstPageEntries(),
-      isBusy: false,
-    };
-    setPaginationState(initialState);
-  }, []);
-
-  // ON PAGE CHANGE
-  useEffect(() => {
-    setNewDataItemsForPage(paginationState.actualPageIdx);
-  }, [paginationState.actualPageIdx]);
+  const setNewPage = useCallback((page: number) => {
+    setPaginationState((prevState) => ({...prevState, currentPage: page}))
+  },[]);
 
   const paginationActions = {
     setNewDataItemsForPage: setNewDataItemsForPage,
     setActualPageIdx: setActualPageIdx,
   };
 
-  return [paginationState, paginationActions];
+
+  // useEffecty 1. asynchroniczne, 2. do synchronizowania UI który zmienia się w czasie, []
+
+  return [paginationState, paginationActions, firstPageEntries];
 }
