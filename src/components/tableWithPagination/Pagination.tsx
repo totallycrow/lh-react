@@ -1,4 +1,5 @@
 import React from "react";
+import Button from "./Button";
 
 export default function Pagination({
   paginationState,
@@ -7,48 +8,31 @@ export default function Pagination({
   const handleOnClick = (page: number) => {
     paginationActions.setActualPageIdx(page);
   };
-  const generateButtons = (paginationState:any) => {
-    let buttonsArray = [];
-    const lastPageIndex = paginationState.lastPageIdx;
 
-    const firstPageButton = (
-      <button key="first-page-button" onClick={() => handleOnClick(1)}>
-        First Page
-      </button>
-    );
+  console.log("PAGINATION COMPONENT");
 
-    const lastPageButton = (
-      <button
-        key="last-page-button"
-        onClick={() => handleOnClick(lastPageIndex)}
-      >
-        lastPageIndex
-      </button>
-    );
+  console.log(paginationState);
+  const lastPageIndex = paginationState.lastPageIdx;
+  console.log(lastPageIndex);
+  const buttonsIndexes = Array.from(
+    { length: lastPageIndex },
+    (element, i) => i + 1
+  );
 
-    buttonsArray.push(firstPageButton);
-
-    // KEY FOR BUTTONS?
-    for (let i = 2; i < paginationState.lastPageIdx; i++) {
-      buttonsArray.push(
-        <button key={crypto.randomUUID()} onClick={() => handleOnClick(i)}>
-          {i}
-        </button>
-      );
-    }
-
-    buttonsArray.push(lastPageButton);
-    return buttonsArray;
-  };
+  console.log(buttonsIndexes);
 
   return (
     <>
-    {generateButtons().map((el ,index) => {
-
-      return <button></button>
-    })}
       <div>Select Page</div>
-      {generateButtons()}
+      <div>
+        {buttonsIndexes.map((index) => (
+          <Button
+            key={crypto.randomUUID()}
+            buttonPage={index}
+            handler={handleOnClick}
+          />
+        ))}
+      </div>
     </>
   );
 }

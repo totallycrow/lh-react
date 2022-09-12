@@ -6,19 +6,22 @@ import usePagination from "./usePagination";
 interface IPaginationState {
   actualPageIdx: number;
   lastPageIdx: any;
-  entriesOnSelectedPage: Array<any>;
+  // entriesOnSelectedPage: Array<any>;
   isBusy: boolean;
 }
 
 export default function PaginatedTable({ dataItems }: any) {
-  const [paginationState, paginationActions] = usePagination(dataItems, 5);
+  const [paginationState, paginationActions, pageItems] = usePagination(
+    dataItems,
+    5
+  );
+
+  console.log("FIRST PAGE ENTRIES");
+  console.log(pageItems);
 
   return (
     <div>
-      <Table
-        dataItems={paginationState.entriesOnSelectedPage}
-        header={["Name", "Price"]}
-      />
+      <Table dataItems={pageItems} header={["Name", "Price"]} />
       <Pagination
         paginationState={paginationState}
         paginationActions={paginationActions}

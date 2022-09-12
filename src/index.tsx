@@ -20,15 +20,13 @@ root.render(
         </Route>
 
         {/* AUTH TOKEN */}
-        <Route
-          path="/secure-link"
-        >
-          <AppMemo />
-          <Route path="/" element={<App />}>
+        {/* <Route path="/secure-link"> */}
+        {/* <AppMemo /> */}
+        <Route path="/" element={<App />}>
           <Route path="usememo" element={<AppMemo />} />
           <Route path="paginatedtable" element={<AppPagination />} />
         </Route>
-        </Route>
+        {/* </Route> */}
         {/* HANDLE DEFAULT */}
         <Route
           path="*"

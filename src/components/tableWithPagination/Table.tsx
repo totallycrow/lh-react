@@ -1,6 +1,9 @@
 import React from "react";
 
 export default function Table({ dataItems, header }: any) {
+  console.log("TABLE COMPONENT");
+  console.log(dataItems);
+
   return (
     <div>
       <table>
