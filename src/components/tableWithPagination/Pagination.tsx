@@ -7,7 +7,7 @@ export default function Pagination({
   const handleOnClick = (page: number) => {
     paginationActions.setActualPageIdx(page);
   };
-  const generateButtons = (paginationState,paginationState) => {
+  const generateButtons = (paginationState:any) => {
     let buttonsArray = [];
     const lastPageIndex = paginationState.lastPageIdx;
 
