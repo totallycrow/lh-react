@@ -29,7 +29,7 @@ export default function Pagination({
           <Button
             key={crypto.randomUUID()}
             buttonPage={index}
-            handler={handleOnClick}
+            handler={() => handleOnClick(index)}
           />
         ))}
       </div>
